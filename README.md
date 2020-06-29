@@ -7,7 +7,7 @@ This project aims to create a web-approachable app (service?) that allows for re
 The minimum viable product (MVP) looks like
 
  - It can run as a standalone service.
- - Users one folder in the working directory to store all INI files. Potentially could support nested folders within that folder, but not part of the MVP.
+ - Uses one folder in the working directory to store all INI files. Potentially could support nested folders within that folder, but not part of the MVP.
  - Users can create new INI files, read from them, and delete them.
  - Full CRUD support within the INI file for keys, sections, and comments.
  - Data is returned over JSON in an easy to understand and work with format.
