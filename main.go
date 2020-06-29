@@ -41,19 +41,31 @@ func main() {
 		c.String(200, "hey!")
 	})
 
-	r.GET("/filelist", func(c *gin.Context) {
-		files, err := ioutil.ReadDir(documentDir)
-		if err != nil {
-			c.JSON(400, gin.H{
-				"msg": err,
-			})
-		} else {
-			c.JSON(200, gin.H{
-				"files": files,
-			})
-		}
-	})
+	r.GET("/filelist", apiFileList)
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+}
+
+func apiFileList(c *gin.Context) {
+	files, err := ioutil.ReadDir(documentDir)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"msg": err,
+		})
+	} else {
+		fmt.Println(FileEntry{"hey", 2})
+		c.JSON(200, gin.H{
+			"files": createFileList(files),
+		})
+	}
+}
+
+func createFileList(files []os.FileInfo) []FileEntry {
+	size := len(files)
+	entryList := make([]FileEntry, size)
+	for i, v := range files {
+		entryList[i] = FileEntry{v.Name(), v.Size()}
+	}
+	return entryList
 }
 
 func initDocumentDirectory(path string) error {
