@@ -31,7 +31,7 @@ func main() {
 	r := gin.Default()
 
 	r.GET("/api/v1/filelist", apiFileList)
-	r.GET("/api/v1/file/:path")
+	r.GET("/api/v1/file/:path", apiReadFile)
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 

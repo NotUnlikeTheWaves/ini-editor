@@ -2,6 +2,8 @@ package main
 
 import (
 	"io/ioutil"
+	"net/http"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,6 +22,12 @@ func apiFileList(c *gin.Context) {
 }
 
 func apiReadFile(c *gin.Context) {
-	// path := c.Param("path")
-
+	fileName := c.Param("path")
+	filePath := filepath.Join(documentDir, fileName) + ".ini"
+	file, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		c.String(http.StatusNotFound, "No file found named %s.", filePath)
+	} else {
+		c.String(http.StatusOK, string(file))
+	}
 }
