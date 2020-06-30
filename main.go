@@ -29,18 +29,9 @@ func main() {
 
 	// Set up Gin stuff
 	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-			"pwd":     documentDir,
-		})
-	})
-
-	r.GET("/nojson", func(c *gin.Context) {
-		c.String(200, "hey!")
-	})
 
 	r.GET("/api/v1/filelist", apiFileList)
+	r.GET("/api/v1/file/:path")
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 
@@ -58,15 +49,4 @@ func initDocumentDirectory(path string) error {
 		return err
 	}
 	return nil
-}
-
-func exists(path string) (bool, error) {
-	_, err := os.Stat(path)
-	if err == nil {
-		return true, nil
-	}
-	if os.IsNotExist(err) {
-		return false, nil
-	}
-	return false, err
 }
