@@ -32,6 +32,7 @@ func main() {
 
 	r.GET("/api/v1/filelist", apiFileList)
 	r.GET("/api/v1/file/:path", apiReadFile)
+	r.POST("/api/v1/file/:path/clone", apiCloneFile)
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 
