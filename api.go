@@ -24,7 +24,7 @@ func apiFileList(c *gin.Context) {
 
 func apiReadFile(c *gin.Context) {
 	fileName := c.Param("path")
-	filePath := filepath.Join(documentDir, fileName) + ".ini"
+	filePath := filepath.Join(documentDir, fileName)
 	file, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		c.String(http.StatusNotFound, "No file found named %s.", filePath)
@@ -43,8 +43,8 @@ func apiCloneFile(c *gin.Context) {
 		return;
 	}
 	originalFileName := c.Param("path")
-	newFileName := filepath.Join(documentDir, json.NewName) + ".ini"
-	filePath := filepath.Join(documentDir, originalFileName) + ".ini"
+	newFileName := filepath.Join(documentDir, json.NewName)
+	filePath := filepath.Join(documentDir, originalFileName)
 	file, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		c.String(http.StatusNotFound, "No file found named %s.", filePath)
