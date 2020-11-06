@@ -44,7 +44,7 @@ func initDocumentDirectory(path string) error {
 	if err != nil {
 		return err
 	}
-	if exists == false {
+	if !exists {
 		fmt.Println("Document directory not found, attempting to create...")
 		err := os.Mkdir(path, os.ModePerm)
 		return err

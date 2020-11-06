@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"os"
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
@@ -50,7 +50,7 @@ func apiCloneFile(c *gin.Context) {
 		c.String(http.StatusNotFound, "No file found named %s.", filePath)
 		return
 	}
-	fmt.Printf("Output to %s", newFileName)
-	ioutil.WriteFile(newFileName, file, 777)
+	info, _ := os.Stat(originalFileName)
+	ioutil.WriteFile(newFileName, file, info.Mode())
 	c.String(http.StatusOK, string(file))
 }
