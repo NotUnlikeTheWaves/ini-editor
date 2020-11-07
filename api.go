@@ -22,7 +22,18 @@ func apiFileList(c *gin.Context) {
 	}
 }
 
-func apiReadFile(c *gin.Context) {
+func apiReadFileStructured(c *gin.Context) {
+	fileName := c.Param("path")
+	filePath := filepath.Join(documentDir, fileName)
+	result, err := readIniFile(filePath)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"content": result, "error": err})
+	} else {
+		c.JSON(http.StatusOK, gin.H{"content": result, "error": err})
+	}
+}
+
+func apiReadFileRaw(c *gin.Context) {
 	fileName := c.Param("path")
 	filePath := filepath.Join(documentDir, fileName)
 	file, err := ioutil.ReadFile(filePath)
