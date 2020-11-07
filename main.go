@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
 )
 
 const documentDirName string = "documents"
@@ -29,6 +30,7 @@ func main() {
 
 	// Set up Gin stuff
 	r := gin.Default()
+	r.Use(cors.Default())
 
 	r.GET("/api/v1/filelist", apiFileList)
 	r.GET("/api/v1/file/:path", apiReadFile)
