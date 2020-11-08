@@ -1,9 +1,9 @@
 package main
 
 import (
-	"os"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"path/filepath"
 
 	"github.com/gin-gonic/gin"
@@ -51,7 +51,7 @@ func apiCloneFile(c *gin.Context) {
 	var json Clone
 	if err := c.ShouldBindJSON(&json); err != nil {
 		c.String(http.StatusBadRequest, "Error: Bad parse of data, fill the field 'newName'")
-		return;
+		return
 	}
 	originalFileName := c.Param("path")
 	newFileName := filepath.Join(documentDir, json.NewName)

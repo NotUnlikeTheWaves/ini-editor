@@ -4,15 +4,14 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-
 type IniValue struct {
-	Meta	string
-	Value	string
+	Meta  string
+	Value string
 }
 
 type IniSection struct {
 	Entries map[string]IniValue
-	Meta string
+	Meta    string
 }
 
 type IniDocument struct {
@@ -35,7 +34,7 @@ func readIniFile(path string) (*IniDocument, error) {
 		name := section.Name()
 
 		document.Sections[name] = IniSection{
-			Meta: section.Comment,
+			Meta:    section.Comment,
 			Entries: make(map[string]IniValue),
 		}
 
@@ -43,7 +42,7 @@ func readIniFile(path string) (*IniDocument, error) {
 			keyName := key.Name()
 			document.Sections[name].Entries[keyName] = IniValue{
 				Value: key.Value(),
-				Meta: key.Comment,
+				Meta:  key.Comment,
 			}
 		}
 
@@ -51,4 +50,3 @@ func readIniFile(path string) (*IniDocument, error) {
 
 	return document, nil
 }
-
