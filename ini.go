@@ -4,54 +4,51 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-type KVCPair struct {
-	Key     string
-	Value   string
-	Comment string
+
+type IniValue struct {
+	Meta	string
+	Value	string
 }
 
-type Section struct {
-	Name    string
-	Comment string
-	Entries []KVCPair
+type IniSection struct {
+	Entries map[string]IniValue
+	Meta string
 }
 
 type IniDocument struct {
-	Sections []Section
+	Sections map[string]IniSection
 	Filename string
 }
+
+// ini_obj["section"]["keypair"]
 
 func readIniFile(path string) (*IniDocument, error) {
 	document := new(IniDocument)
 	document.Filename = path
+	document.Sections = make(map[string]IniSection)
 
 	cfg, err := ini.Load(path)
 	if err != nil {
 		return nil, err
 	}
 	for _, section := range cfg.Sections() {
-		pairs := createKVPs(section)
-		document.Sections = append(document.Sections,
-			Section{
-				Name:    section.Name(),
-				Comment: section.Comment,
-				Entries: pairs,
-			},
-		)
+		name := section.Name()
+
+		document.Sections[name] = IniSection{
+			Meta: section.Comment,
+			Entries: make(map[string]IniValue),
+		}
+
+		for _, key := range section.Keys() {
+			keyName := key.Name()
+			document.Sections[name].Entries[keyName] = IniValue{
+				Value: key.Value(),
+				Meta: key.Comment,
+			}
+		}
+
 	}
 
 	return document, nil
 }
 
-func createKVPs(section *ini.Section) []KVCPair {
-	var pairs []KVCPair
-	for _, key := range section.Keys() {
-		pair := KVCPair{
-			Key:     key.Name(),
-			Value:   key.Value(),
-			Comment: key.Comment,
-		}
-		pairs = append(pairs, pair)
-	}
-	return pairs
-}
