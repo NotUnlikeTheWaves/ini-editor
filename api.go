@@ -10,7 +10,7 @@ import (
 )
 
 func apiFileList(c *gin.Context) {
-	files, err := ioutil.ReadDir(documentDir)
+	files, err := ioutil.ReadDir(getDocumentDir())
 	if err != nil {
 		c.JSON(400, gin.H{
 			"msg": err,
@@ -24,7 +24,7 @@ func apiFileList(c *gin.Context) {
 
 func apiReadFileStructured(c *gin.Context) {
 	fileName := c.Param("path")
-	filePath := filepath.Join(documentDir, fileName)
+	filePath := filepath.Join(getDocumentDir(), fileName)
 	result, err := readIniFile(filePath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"content": result, "error": err})
@@ -35,7 +35,7 @@ func apiReadFileStructured(c *gin.Context) {
 
 func apiReadFileRaw(c *gin.Context) {
 	fileName := c.Param("path")
-	filePath := filepath.Join(documentDir, fileName)
+	filePath := filepath.Join(getDocumentDir(), fileName)
 	file, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		c.String(http.StatusNotFound, "No file found named %s.", filePath)
@@ -53,6 +53,7 @@ func apiCloneFile(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Error: Bad parse of data, fill the field 'newName'")
 		return
 	}
+	documentDir := getDocumentDir()
 	originalFileName := c.Param("path")
 	newFileName := filepath.Join(documentDir, json.NewName)
 	filePath := filepath.Join(documentDir, originalFileName)
